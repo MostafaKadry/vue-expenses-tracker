@@ -51,6 +51,7 @@ const updateTotals = () => {
   updateChanges();
 };
 
+
 const updateChanges = () => {
   incomeChange.value = calculateChange(income.value);
   expenseChange.value = calculateChange(expense.value);
@@ -61,7 +62,7 @@ const calculateChange = (value) => {
     .filter(t => t.type === 'income' || t.type === 'expense')
     .slice(-1)[0]
     ?.amount || 0;
-  return lastPeriodValue === 0 ? null : ((value - lastPeriodValue) / lastPeriodValue) * 100;
+  return lastPeriodValue === 0 ? null : (((value - lastPeriodValue) / lastPeriodValue) * 100).toFixed(2);
 };
 
 const editTransaction = (transaction) => {
@@ -74,7 +75,7 @@ const deleteTransaction = (id) => {
   updateTotals();
 };
 
-
+updateTotals();
 </script>
 
 <template>
@@ -82,7 +83,7 @@ const deleteTransaction = (id) => {
     <!-- <Header /> -->
     <!-- <Hero /> -->
     <Balance :balance="balance" :balanceChange="balanceChange"/>
-    <IncomeExpense :income="income" :expense="expense" :incomeChange="incomeChange" :expenseChange="expenseChange"/>
+    <IncomeExpense :income="+income" :expense="+expense" :incomeChange="+incomeChange" :expenseChange="+expenseChange"/>
     <TransactionList :transactions="transactions"/>
     <AddTransaction @add="addTransaction" @edit="editTransaction" @delete="deleteTransaction" />
   </div>

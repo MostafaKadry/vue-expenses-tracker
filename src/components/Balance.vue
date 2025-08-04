@@ -29,9 +29,9 @@
     </div>
   </template>
   
-  <script>
-  export default {
-    props: {
+  <script setup>
+    import { computed } from 'vue'
+    const props = defineProps({
       balance: {
         type: Number,
         default: 0
@@ -40,14 +40,12 @@
         type: Number,
         default: null
       }
-    },
-    computed: {
-      formattedBalance() {
-        return Math.abs(this.balance).toLocaleString('en-US', {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2
-        })
-      }
-    }
-  }
+    })
+    
+    const formattedBalance = computed(() => {
+      return Math.abs(props.balance).toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      })
+    })
   </script>
