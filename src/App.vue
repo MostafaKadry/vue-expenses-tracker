@@ -1,33 +1,35 @@
 <script setup>
-import Header from './components/Header.vue'
-import Hero from './components/Hero.vue';
-import Balance from './components/Balance.vue';
-import IncomeExpense from './components/IncomeExpense.vue';
-import TransactionList from './components/TransactionList.vue';
-import AddTransaction from './components/AddTransaction.vue';
-import { ref } from 'vue';
+import Header from './components/Header.vue';
+import { RouterView } from 'vue-router';
+import SuccessToast from './components/SuccessToast.vue'
+import FaildToast from './components/FaildToast.vue'
+import { ref, watch } from 'vue'
+
+const transactions = ref([
+    {
+        id: 1,
+        type: 'income',
+        amount: 1000,
+        category: 'salary',
+        date: '2023-01-01',
+        description: 'Salary for January'
+    },
+    {
+        id: 2,
+        type: 'expense',
+        amount: 500,
+        category: 'housing',
+        date: '2023-01-02',
+        description: 'Rent for January'
+    }
+])
 
 const balance = ref(0);
 const balanceChange = ref(null);
+const showSuccessToast = ref(false)
+const showFaildToast = ref(false)
+const message = ref('')
 
-const transactions = ref([
-  {
-    id: 1,
-    type: 'income',
-    amount: 1000,
-    category: 'salary',
-    date: '2023-01-01',
-    description: 'Salary for January'
-  },
-  {
-    id: 2,
-    type: 'expense',
-    amount: 500,
-    category: 'housing',
-    date: '2023-01-02',
-    description: 'Rent for January'
-  }
-]);
 
 const income = ref(0);
 const expense = ref(0);
@@ -36,7 +38,36 @@ const incomeChange = ref(null);
 const expenseChange = ref(null);
 
 const addTransaction = (transaction) => {
-  transactions.value.push(transaction);
+  console.log(transaction);
+  if (!transaction.type || !transaction.amount || !transaction.category || !transaction.date){
+    message.value = 'Please fill all required fields'
+    showFaildToast.value = true;
+    return
+  }
+  if(typeof transaction.amount !== 'number'){
+    message.value = 'Amount must be a number'
+    showFaildToast.value = true
+    return
+  } 
+  else if (transaction.type === 'expense' && transaction.amount > balance.value){
+    message.value = 'You don\'t have enough balance'
+    showFaildToast.value = true
+    return
+  } 
+  
+  // Create a new transaction object with a unique ID
+  const newTransaction = {
+    ...transaction,
+    id: Date.now(), // Generate a unique ID using timestamp
+    amount: parseFloat(transaction.amount) // Ensure amount is a number
+  };
+  
+  // Use array spread to create a new array for Vue's reactivity
+  transactions.value = [...transactions.value, newTransaction];
+  
+  message.value = 'Transaction added successfully'
+  showSuccessToast.value = true
+
   updateTotals();
 };
 
@@ -76,16 +107,32 @@ const deleteTransaction = (id) => {
 };
 
 updateTotals();
+watch(showSuccessToast, () => {
+  setTimeout(() => {
+    showSuccessToast.value = false
+  }, 3000)
+})
+watch(showFaildToast, () => {
+  setTimeout(() => {
+    showFaildToast.value = false
+  }, 3000)
+})
 </script>
 
 <template>
   <div class="container mx-auto">
-    <!-- <Header /> -->
-    <!-- <Hero /> -->
-    <Balance :balance="balance" :balanceChange="balanceChange"/>
-    <IncomeExpense :income="+income" :expense="+expense" :incomeChange="+incomeChange" :expenseChange="+expenseChange"/>
-    <TransactionList :transactions="transactions"/>
-    <AddTransaction @add="addTransaction" @edit="editTransaction" @delete="deleteTransaction" />
+    <Header />
+    <RouterView v-slot="{ Component }">
+      <component
+      :is="Component"
+      :transactions="transactions"
+      @add="addTransaction"
+      @edit="editTransaction"
+      @delete="deleteTransaction"
+    />
+    <SuccessToast :message="message" :success="showSuccessToast" />
+    <FaildToast :message="message" :faild="showFaildToast"/>
+    </RouterView>
   </div>
 </template>
 

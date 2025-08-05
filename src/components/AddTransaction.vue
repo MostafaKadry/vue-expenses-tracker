@@ -1,18 +1,13 @@
 <template>
   <div class="flex items-center justify-center my-4">
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full">
-      <SuccessToast message="Transaction added successfully" :success="showSuccessToast" />
-      <FaildToast message="Transaction deleted successfully" />
+
       <!-- Header -->
       <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
         <h2 class="text-lg font-semibold text-gray-900 dark:text-white">
           {{ editingTransaction ? 'Edit Transaction' : 'Add New Transaction' }}
         </h2>
-        <button class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
+
       </div>
 
       <!-- Form -->
@@ -52,7 +47,7 @@
             </div>
             <input type="number" id="amount" v-model="form.amount" step="0.01" min="0"
               class="block w-full pl-8 pr-12 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
-              placeholder="0.00" required />
+              placeholder="0.00" />
             <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
               <span class="text-gray-500 sm:text-sm">L.E</span>
             </div>
@@ -64,7 +59,7 @@
           <label for="category" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Category</label>
           <select id="category" v-model="form.category"
             class="block w-full py-2 px-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:text-white"
-            required>
+            >
             <option value="" disabled>Select a category</option>
             <option v-for="category in filteredCategories" :key="category.value" :value="category.value">
               {{ category.label }}
@@ -77,7 +72,7 @@
           <label for="date" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Date</label>
           <input type="date" id="date" v-model="form.date"
             class="block w-full py-2 px-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 dark:text-white"
-            required />
+             />
         </div>
 
         <!-- Description -->
@@ -91,7 +86,9 @@
 
         <!-- Form Actions -->
         <div class="flex justify-end space-x-3">
-          <button type="button"
+          <button 
+            @click="resetForm"
+            type="button"
             class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
             Cancel
           </button>
@@ -107,8 +104,6 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import SuccessToast from './SuccessToast.vue'
-import FaildToast from './FaildToast.vue'
 
 // Props
 const props = defineProps({
@@ -117,8 +112,7 @@ const props = defineProps({
     default: null
   }
 })
-const showSuccessToast = ref(false)
-const showFaildToast = ref(false)
+
 // Emits
 const emit = defineEmits(['add', 'update'])
 
@@ -199,26 +193,6 @@ function handleSubmit() {
   } else {
     emit('add', transactionData)
   }
-
   resetForm()
-  showSuccessToast.value = true
-  setTimeout(() => {
-    showSuccessToast.value = false
-  }, 3000)
-
 }
-
-
-if (showSuccessToast.value) {
-  setTimeout(() => {
-    showSuccessToast.value = false
-  }, 3000)
-}
-
-if (showFaildToast.value) {
-  setTimeout(() => {
-    showFaildToast.value = false
-  }, 3000)
-}
-
 </script>
