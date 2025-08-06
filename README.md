@@ -1,6 +1,6 @@
 # Expense Tracker
 
-![Expense Tracker Screenshot](./public/screenshot.png) <!-- Add a screenshot if available -->
+![Expense Tracker Screenshot](./public/screenshot.png) 
 
 A simple and modern expense tracking application built with Vue 3, Vite, and Tailwind CSS. Manage your personal finances with intuitive transaction tracking, balance monitoring, and insightful analytics.
 
