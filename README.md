@@ -1,17 +1,33 @@
-# expense-tracker
+# Expense Tracker
 
-This template should help get you started developing with Vue 3 in Vite.
+![Expense Tracker Screenshot](./public/screenshot.png) <!-- Add a screenshot if available -->
 
-## Recommended IDE Setup
+A simple and modern expense tracking application built with Vue 3, Vite, and Tailwind CSS. Manage your personal finances with intuitive transaction tracking, balance monitoring, and insightful analytics.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Features
 
-## Customize configuration
+- 💰 **Transaction Management**: Add, edit, and delete income/expense transactions
+- 📊 **Real-time Balance Tracking**: Automatic calculation of current balance
+- 📈 **Financial Insights**: Visualize income vs. expenses
+- 🏷 **Category System**: Organize transactions by custom categories
+- 📱 **Responsive Design**: Works on all device sizes
+- 🚀 **Fast Performance**: Built with Vite for optimal speed
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## Technologies Used
+
+- Vue 3 (Composition API)
+- Vite (Build Tool)
+- Vue Router (Navigation)
+- Tailwind CSS (Styling)
+- Heroicons (Beautiful SVG icons)
 
 ## Project Setup
 
+### Prerequisites
+- Node.js (v16 or higher recommended)
+- npm (v8 or higher)
+
+### Installation
 ```sh
 npm install
 ```
@@ -20,10 +36,4 @@ npm install
 
 ```sh
 npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
 ```
