@@ -155,8 +155,8 @@
     },
     computed: {
       filteredTransactions() {
-        if (this.filter === 'all') return this.transactions
-        return this.transactions.filter(t => t.type === this.filter)
+        if (this.filter === 'all') return this.transactions.sort((a, b) => new Date(b.date) - new Date(a.date))
+        return this.transactions.filter(t => t.type === this.filter).sort((a, b) => new Date(b.date) - new Date(a.date))
       }
     },
     methods: {

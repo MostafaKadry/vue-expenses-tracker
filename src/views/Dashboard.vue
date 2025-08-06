@@ -11,8 +11,6 @@ const props = defineProps({
     required: true
   }
 }) 
-console.log(props.transactions)
-
 const emit = defineEmits(['add', 'edit', 'delete'])
 
 const balance = computed(() => {
@@ -40,7 +38,9 @@ const expenseChange = computed(() => null);
 </script>
 
 <template>
+  <div>
     <Balance :balance="balance" :balanceChange="balanceChange"/>
     <IncomeExpense :income="+income" :expense="+expense" :incomeChange="+incomeChange" :expenseChange="+expenseChange"/>
     <AddTransaction :transactions="transactions" @add="emit('add', $event)" />
+  </div>
 </template>

@@ -38,7 +38,6 @@ const incomeChange = ref(null);
 const expenseChange = ref(null);
 
 const addTransaction = (transaction) => {
-  console.log(transaction);
   if (!transaction.type || !transaction.amount || !transaction.category || !transaction.date){
     message.value = 'Please fill all required fields'
     showFaildToast.value = true;
@@ -120,21 +119,31 @@ watch(showFaildToast, () => {
 </script>
 
 <template>
-  <div class="container mx-auto">
+  <div class="container mx-auto min-h-screen">
     <Header />
-    <RouterView v-slot="{ Component }">
-      <component
-      :is="Component"
-      :transactions="transactions"
-      @add="addTransaction"
-      @edit="editTransaction"
-      @delete="deleteTransaction"
+    <RouterView v-slot="{ Component, route }">
+        <component
+          :is="Component"
+          :key="route.path"
+          :transactions="transactions"
+          @add="addTransaction"
+          @edit="editTransaction"
+          @delete="deleteTransaction"
+          class="py-4"
+        />
+      </RouterView>
+
+    
+    <SuccessToast 
+      :message="message" 
+      :success="showSuccessToast" 
+    
     />
-    <SuccessToast :message="message" :success="showSuccessToast" />
-    <FaildToast :message="message" :faild="showFaildToast"/>
-    </RouterView>
+    <FaildToast 
+      :message="message" 
+      :faild="showFaildToast"
+    
+    />
   </div>
 </template>
 
-<style scoped>
-</style>
